@@ -1,0 +1,20 @@
+.sparkle {
+  position: fixed;
+  pointer-events: none;
+  font-size: 2em;
+  user-select: none;
+  transform: translate(-50%, -50%);
+  animation: sparkleAnimation 0.6s ease-out forwards;
+  z-index: 9999;
+}
+
+@keyframes sparkleAnimation {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -100px) scale(0.5);
+  }
+}
