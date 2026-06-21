@@ -4,6 +4,7 @@ import PasswordGate from './components/PasswordGate';
 import Sparkle from './components/Sparkle';
 import AudioPlayer from './components/AudioPlayer';
 import MessageSection from './components/MessageSection';
+import RoseGardenSection from './components/RoseGardenSection';
 import RosePetals from './components/RosePetals';
 import ScrollHint from './components/ScrollHint';
 import mainImage from './assets/background.jpg';
@@ -50,6 +51,7 @@ function App() {
           </section>
           <MessageSection
             id="message-section"
+            nextSectionId="rose-garden"
             messages={{
               en: <p>What happened shouldn't have happened, and I truly apologize for my behavior.
               They say that every person has a good side and a bad side. And honestly, I didn't want things to end this way, especially with the person who was my favorite.
@@ -68,6 +70,7 @@ function App() {
               </p>,
             }}
           />
+          <RoseGardenSection id="rose-garden" />
         </>
       )}
     </div>
