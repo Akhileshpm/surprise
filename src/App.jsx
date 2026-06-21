@@ -25,6 +25,7 @@ function App() {
   const messageSectionRef = useRef(null);
   const gardenSectionRef = useRef(null);
   const bouquetSectionRef = useRef(null);
+  const closingMessageSectionRef = useRef(null);
   const journeyRef = useScrollJourney(
     heroSectionRef,
     messageSectionRef,
@@ -132,6 +133,7 @@ function App() {
           />
           <MessageSection
             id="closing-message"
+            sectionRef={closingMessageSectionRef}
             nextSectionId="questions"
             messages={{ en: <p> This picture is so deep in my heart, it meant so much to me, 
               tell me at least there was something special in this picture and not just an ordinary selfie for you.
@@ -147,6 +149,10 @@ function App() {
           />
           <ExpandableMessageGroup
             id="questions"
+            intro={{
+              ar: 'عافاك يا مريامة، كوني لطيفة معايا واقري كلشي.',
+              en: 'Please be my kind Mariama and read everything.',
+            }}
             items={[
               {
                 id: 'question-1',

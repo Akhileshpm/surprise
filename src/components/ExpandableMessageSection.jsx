@@ -57,26 +57,39 @@ function ExpandableMessageItem({ id, questions, messages, defaultLanguage = 'ar'
 function ExpandableMessageGroup({
   id,
   items,
+  intro,
   nextSectionId,
   sectionRef: externalRef,
   showScrollHint = false,
 }) {
   const internalRef = useRef(null);
+  const introRef = useRef(null);
   const sectionRef = externalRef || internalRef;
+  const firstQuestionId = items[0]?.id;
 
   return (
     <section id={id} ref={sectionRef} className="expandable-message-group">
-      <div className="expandable-message-stack">
-        {items.map((item) => (
-          <ExpandableMessageItem
-            key={item.id}
-            id={item.id}
-            questions={item.questions}
-            messages={item.messages}
-            defaultLanguage={item.defaultLanguage}
-          />
-        ))}
+      <div className="expandable-message-group-content">
+        {intro && (
+          <div ref={introRef} className="expandable-message-intro">
+            <p>{intro.ar}</p>
+          </div>
+        )}
+        <div className="expandable-message-stack">
+          {items.map((item) => (
+            <ExpandableMessageItem
+              key={item.id}
+              id={item.id}
+              questions={item.questions}
+              messages={item.messages}
+              defaultLanguage={item.defaultLanguage}
+            />
+          ))}
+        </div>
       </div>
+      {intro && firstQuestionId && (
+        <ScrollHint sectionRef={introRef} targetId={firstQuestionId} />
+      )}
       {showScrollHint && nextSectionId && (
         <ScrollHint sectionRef={sectionRef} targetId={nextSectionId} />
       )}

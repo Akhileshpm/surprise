@@ -5,11 +5,12 @@ import ScrollHint from './ScrollHint';
 
 function RoseGardenSection({ id, sectionRef: externalRef, messages, nextSectionId }) {
   const internalRef = useRef(null);
+  const stickyRef = useRef(null);
   const sectionRef = externalRef || internalRef;
 
   return (
     <section id={id} ref={sectionRef} className="rose-garden-section">
-      <div className="rose-garden-sticky">
+      <div ref={stickyRef} className="rose-garden-sticky">
         <MessageSection
           id="garden-message"
           messages={messages}
@@ -19,7 +20,7 @@ function RoseGardenSection({ id, sectionRef: externalRef, messages, nextSectionI
         />
       </div>
       {nextSectionId && (
-        <ScrollHint sectionRef={sectionRef} targetId={nextSectionId} />
+        <ScrollHint sectionRef={stickyRef} targetId={nextSectionId} />
       )}
     </section>
   );

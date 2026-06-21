@@ -17,10 +17,10 @@ function ScrollHint({ sectionRef, targetId }) {
 
       const sectionRect = section.getBoundingClientRect();
       const targetRect = target.getBoundingClientRect();
-      const sectionCenter = sectionRect.top + sectionRect.height / 2;
+      const viewportTop = window.innerHeight * 0.15;
+      const viewportBottom = window.innerHeight * 0.85;
       const isCurrentSection =
-        sectionCenter > window.innerHeight * 0.15 &&
-        sectionCenter < window.innerHeight * 0.85;
+        sectionRect.top < viewportBottom && sectionRect.bottom > viewportTop;
       const hasMoreBelow = targetRect.top > window.innerHeight * 0.2;
 
       setVisible(isCurrentSection && hasMoreBelow);

@@ -5,11 +5,12 @@ import meAndMariam from '../assets/me_and_mariam.webp';
 
 function BouquetPhotoSection({ id, sectionRef: externalRef, nextSectionId }) {
   const internalRef = useRef(null);
+  const stickyRef = useRef(null);
   const sectionRef = externalRef || internalRef;
 
   return (
     <section id={id} ref={sectionRef} className="bouquet-photo-section">
-      <div className="bouquet-photo-sticky">
+      <div ref={stickyRef} className="bouquet-photo-sticky">
         <div className="bouquet-photo-frame">
           <img
             src={meAndMariam}
@@ -22,7 +23,7 @@ function BouquetPhotoSection({ id, sectionRef: externalRef, nextSectionId }) {
         </div>
       </div>
       {nextSectionId && (
-        <ScrollHint sectionRef={sectionRef} targetId={nextSectionId} />
+        <ScrollHint sectionRef={stickyRef} targetId={nextSectionId} />
       )}
     </section>
   );
