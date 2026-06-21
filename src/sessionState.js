@@ -5,6 +5,7 @@ export const ALL_SECTIONS = [
   'bouquet-photo',
   'closing-message',
   'questions',
+  'final-plea',
   'epilogue',
 ]
 

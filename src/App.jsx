@@ -7,6 +7,7 @@ import AudioPlayer from './components/AudioPlayer';
 import MessageSection from './components/MessageSection';
 import ExpandableMessageGroup from './components/ExpandableMessageSection';
 import EpilogueSection from './components/EpilogueSection';
+import PleaSection from './components/PleaSection';
 import RoseGardenSection from './components/RoseGardenSection';
 import BouquetPhotoSection from './components/BouquetPhotoSection';
 import BouquetConvergence from './components/BouquetConvergence';
@@ -45,6 +46,7 @@ function AuthenticatedContent() {
   const bouquetSectionRef = useRef(null);
   const closingMessageSectionRef = useRef(null);
   const questionsSectionRef = useRef(null);
+  const pleaSectionRef = useRef(null);
   const epilogueSectionRef = useRef(null);
   const journeyRef = useScrollJourney(
     heroSectionRef,
@@ -59,6 +61,7 @@ function AuthenticatedContent() {
   useSectionAnalytics(bouquetSectionRef, 'bouquet-photo', 'Bouquet photo');
   useSectionAnalytics(closingMessageSectionRef, 'closing-message', 'Closing message');
   useSectionAnalytics(questionsSectionRef, 'questions', 'Questions section');
+  useSectionAnalytics(pleaSectionRef, 'final-plea', 'Final plea');
   useSectionAnalytics(epilogueSectionRef, 'epilogue', 'Epilogue');
 
   useEffect(() => {
@@ -179,7 +182,7 @@ function AuthenticatedContent() {
           <ExpandableMessageGroup
             id="questions"
             sectionRef={questionsSectionRef}
-            nextSectionId="epilogue"
+            nextSectionId="final-plea"
             showScrollHint
             intro={{
               ar: 'عافاك يا مريامة، كوني لطيفة معايا واقري كلشي.',
@@ -645,6 +648,7 @@ function AuthenticatedContent() {
               },
             ]}
           />
+          <PleaSection id="final-plea" sectionRef={pleaSectionRef} nextSectionId="epilogue" />
           <EpilogueSection id="epilogue" sectionRef={epilogueSectionRef} />
     </div>
   );
