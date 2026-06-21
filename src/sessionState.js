@@ -9,7 +9,7 @@ export const ALL_SECTIONS = [
   'epilogue',
 ]
 
-export const TOTAL_QUESTIONS = 6
+export const TOTAL_QUESTIONS = 7
 
 const VISIT_KEY = 'analytics_visit_count'
 

@@ -646,6 +646,32 @@ function AuthenticatedContent() {
                   ),
                 },
               },
+              {
+                id: 'question-7',
+                questions: {
+                  en: 'How I fulfilled my promises.',
+                  ar: 'كيفاش وفيت بوعودي.',
+                },
+                messages: {
+                  en: (
+                    <p>
+                      I held your hands and I gave you my word and since that I never came for any arguments with you.
+                      I never tried to text you from any other accounts. I always thrive to keep my promises Mariam.
+                    </p>
+                  ),
+                  ar: (
+                    <p>
+                      شديت يديك وعطيتك كلمتي، ومن داك النهار عمري ما جيت نقلب على المشاكل ولا ندخل معاك فشي جدال.
+                      <br />
+                      <br />
+                      وعمري ما حاولت نراسلك من حسابات أخرى.
+                      <br />
+                      <br />
+                      أنا ديماً كنحاول نوفي بوعودي ونبقى قد كلمتي يا مريم.
+                    </p>
+                  ),
+                },
+              },
             ]}
           />
           <PleaSection id="final-plea" sectionRef={pleaSectionRef} nextSectionId="epilogue" />
