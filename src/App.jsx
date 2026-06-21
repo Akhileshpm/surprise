@@ -21,26 +21,44 @@ function App() {
         <PasswordGate onAuthenticate={() => setIsAuthenticated(true)} />
       ) : (
         <>
-          <div className="content-overlay">
-            <div className="image-composition">
-              <div className="hero-cluster">
-                <img
-                  src={chichouaGhibliImage}
-                  alt="Chichoua"
-                  className="side-image side-image--left"
-                />
-                <img src={hbdpImage} alt="Birthday" className="birthday-image" />
-                <img
-                  src={myMickyImage}
-                  alt="Micky"
-                  className="side-image side-image--right"
-                />
+          <div className="page-background" style={{ backgroundImage: `url(${mainImage})` }} />
+          <section className="hero-section">
+            <div className="content-overlay">
+              <div className="image-composition">
+                <div className="hero-cluster">
+                  <img
+                    src={chichouaGhibliImage}
+                    alt="Chichoua"
+                    className="side-image side-image--left"
+                  />
+                  <img src={hbdpImage} alt="Birthday" className="birthday-image" />
+                  <img
+                    src={myMickyImage}
+                    alt="Micky"
+                    className="side-image side-image--right"
+                  />
+                </div>
+                <img src={princessImage} alt="Princess" className="princess-bottom-image" />
               </div>
-              <img src={princessImage} alt="Princess" className="princess-bottom-image" />
             </div>
-          </div>
-          <div className="main-content" style={{ backgroundImage: `url(${mainImage})` }}>
-          </div>
+            <button
+              type="button"
+              className="scroll-hint"
+              aria-label="Scroll down"
+              onClick={() =>
+                document.getElementById('message-section')?.scrollIntoView({ behavior: 'smooth' })
+              }
+            >
+              <span className="scroll-hint-arrow" aria-hidden="true">
+                ↓
+              </span>
+            </button>
+          </section>
+          <section id="message-section" className="message-section">
+            <div className="message-placeholder">
+              <p>Your message will go here...</p>
+            </div>
+          </section>
         </>
       )}
     </div>
