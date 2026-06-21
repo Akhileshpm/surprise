@@ -15,7 +15,7 @@ function PasswordGate({ onAuthenticate }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const success = validatePassword(password);
-    track('password_attempt', { success });
+    track('password_attempt', { success }, { immediate: true });
     if (success) {
       setError('');
       onAuthenticate();

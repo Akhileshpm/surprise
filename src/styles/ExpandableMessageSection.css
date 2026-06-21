@@ -35,6 +35,12 @@
   font-weight: 500;
 }
 
+.expandable-message-footer {
+  position: relative;
+  height: 48px;
+  margin-top: clamp(8px, 2vw, 16px);
+}
+
 .expandable-message-stack {
   display: flex;
   flex-direction: column;

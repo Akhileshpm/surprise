@@ -5,6 +5,7 @@ import Sparkle from './components/Sparkle';
 import AudioPlayer from './components/AudioPlayer';
 import MessageSection from './components/MessageSection';
 import ExpandableMessageGroup from './components/ExpandableMessageSection';
+import EpilogueSection from './components/EpilogueSection';
 import RoseGardenSection from './components/RoseGardenSection';
 import BouquetPhotoSection from './components/BouquetPhotoSection';
 import BouquetConvergence from './components/BouquetConvergence';
@@ -12,7 +13,7 @@ import PetalStream from './components/PetalStream';
 import SettlingPetals from './components/SettlingPetals';
 import ScrollHint from './components/ScrollHint';
 import { useScrollJourney } from './hooks/useScrollJourney';
-import { useSectionDwell } from './hooks/useSectionDwell';
+import { useSectionAnalytics } from './hooks/useSectionAnalytics';
 import mainImage from './assets/background.jpg';
 import hbdpImage from './assets/hbdp.jpeg';
 import chichouaGhibliImage from './assets/chichoua-ghibli.png';
@@ -50,12 +51,12 @@ function AuthenticatedContent() {
     bouquetSectionRef
   );
 
-  useSectionDwell(heroSectionRef, 'hero');
-  useSectionDwell(messageSectionRef, 'message-section');
-  useSectionDwell(gardenSectionRef, 'rose-garden');
-  useSectionDwell(bouquetSectionRef, 'bouquet-photo');
-  useSectionDwell(closingMessageSectionRef, 'closing-message');
-  useSectionDwell(questionsSectionRef, 'questions');
+  useSectionAnalytics(heroSectionRef, 'hero', 'Birthday hero');
+  useSectionAnalytics(messageSectionRef, 'message-section', 'Apology message');
+  useSectionAnalytics(gardenSectionRef, 'rose-garden', 'Rose garden message');
+  useSectionAnalytics(bouquetSectionRef, 'bouquet-photo', 'Bouquet photo');
+  useSectionAnalytics(closingMessageSectionRef, 'closing-message', 'Closing message');
+  useSectionAnalytics(questionsSectionRef, 'questions', 'Questions section');
 
   return (
     <div className="app" ref={journeyRef}>
@@ -170,6 +171,8 @@ function AuthenticatedContent() {
           <ExpandableMessageGroup
             id="questions"
             sectionRef={questionsSectionRef}
+            nextSectionId="epilogue"
+            showScrollHint
             intro={{
               ar: 'عافاك يا مريامة، كوني لطيفة معايا واقري كلشي.',
               en: 'Please be my kind Mariama and read everything.',
@@ -634,6 +637,7 @@ function AuthenticatedContent() {
               },
             ]}
           />
+          <EpilogueSection id="epilogue" />
     </div>
   );
 }

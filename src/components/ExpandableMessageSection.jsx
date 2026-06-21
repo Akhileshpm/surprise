@@ -1,17 +1,72 @@
-import React, { useId, useRef, useState } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 import { track } from '../analytics';
 import '../styles/ExpandableMessageSection.css';
 import ScrollHint from './ScrollHint';
 
-function ExpandableMessageItem({ id, questions, messages, defaultLanguage = 'ar' }) {
+function ExpandableMessageItem({
+  id,
+  questionNumber,
+  questionLabel,
+  questions,
+  messages,
+  defaultLanguage = 'ar',
+}) {
   const panelId = useId();
+  const openedAt = useRef(null);
   const [language, setLanguage] = useState(defaultLanguage);
   const [expanded, setExpanded] = useState(false);
+
+  const flushQuestionDwell = () => {
+    if (!openedAt.current) return;
+    const durationMs = Date.now() - openedAt.current;
+    openedAt.current = null;
+    if (durationMs > 300) {
+      track('question_closed', {
+        question_id: id,
+        question_number: questionNumber,
+        question_label: questionLabel,
+        duration_ms: durationMs,
+      });
+    }
+  };
+
+  useEffect(() => {
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') flushQuestionDwell();
+    };
+
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    return () => {
+      flushQuestionDwell();
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+    };
+  }, [id, questionNumber, questionLabel]);
 
   const toggleLanguage = () => {
     setLanguage((prev) => {
       const next = prev === 'en' ? 'ar' : 'en';
-      track('language_toggled', { section_id: id, language: next });
+      track('language_toggled', {
+        section_id: id,
+        section_label: questionLabel,
+        language: next,
+      });
+      return next;
+    });
+  };
+
+  const toggleExpanded = () => {
+    setExpanded((prev) => {
+      const next = !prev;
+      if (next) {
+        openedAt.current = Date.now();
+        track('question_opened', {
+          question_id: id,
+          question_number: questionNumber,
+          question_label: questionLabel,
+        });
+      } else {
+        flushQuestionDwell();
+      }
       return next;
     });
   };
@@ -27,13 +82,7 @@ function ExpandableMessageItem({ id, questions, messages, defaultLanguage = 'ar'
         <button
           type="button"
           className="expandable-toggle"
-          onClick={() =>
-            setExpanded((prev) => {
-              const next = !prev;
-              track('expand_toggled', { item_id: id, expanded: next });
-              return next;
-            })
-          }
+          onClick={toggleExpanded}
           aria-expanded={expanded}
           aria-controls={panelId}
           aria-label={expanded ? 'Collapse message' : 'Expand message'}
@@ -75,6 +124,7 @@ function ExpandableMessageGroup({
 }) {
   const internalRef = useRef(null);
   const introRef = useRef(null);
+  const footerRef = useRef(null);
   const sectionRef = externalRef || internalRef;
   const firstQuestionId = items[0]?.id;
 
@@ -87,22 +137,26 @@ function ExpandableMessageGroup({
           </div>
         )}
         <div className="expandable-message-stack">
-          {items.map((item) => (
+          {items.map((item, index) => (
             <ExpandableMessageItem
               key={item.id}
               id={item.id}
+              questionNumber={index + 1}
+              questionLabel={item.questions.en}
               questions={item.questions}
               messages={item.messages}
               defaultLanguage={item.defaultLanguage}
             />
           ))}
         </div>
+        {showScrollHint && nextSectionId && (
+          <div ref={footerRef} className="expandable-message-footer">
+            <ScrollHint sectionRef={footerRef} targetId={nextSectionId} />
+          </div>
+        )}
       </div>
       {intro && firstQuestionId && (
         <ScrollHint sectionRef={introRef} targetId={firstQuestionId} />
-      )}
-      {showScrollHint && nextSectionId && (
-        <ScrollHint sectionRef={sectionRef} targetId={nextSectionId} />
       )}
     </section>
   );

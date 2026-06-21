@@ -20,7 +20,11 @@ function MessageSection({
   const toggleLanguage = () => {
     setLanguage((prev) => {
       const next = prev === 'en' ? 'ar' : 'en';
-      track('language_toggled', { section_id: id, language: next });
+      track('language_toggled', {
+        section_id: id,
+        section_label: id,
+        language: next,
+      });
       return next;
     });
   };
