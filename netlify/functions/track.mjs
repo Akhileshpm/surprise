@@ -2,6 +2,8 @@ import { getStore } from '@netlify/blobs'
 
 const ALLOWED_EVENTS = new Set([
   'password_attempt',
+  'session_started',
+  'session_summary',
   'section_viewed',
   'section_dwell',
   'question_opened',

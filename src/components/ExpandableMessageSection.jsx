@@ -31,13 +31,16 @@ function ExpandableMessageItem({
   };
 
   useEffect(() => {
+    const onBeforeFlush = () => flushQuestionDwell();
     const onVisibilityChange = () => {
       if (document.visibilityState === 'hidden') flushQuestionDwell();
     };
 
+    window.addEventListener('analytics:before-flush', onBeforeFlush);
     document.addEventListener('visibilitychange', onVisibilityChange);
     return () => {
       flushQuestionDwell();
+      window.removeEventListener('analytics:before-flush', onBeforeFlush);
       document.removeEventListener('visibilitychange', onVisibilityChange);
     };
   }, [id, questionNumber, questionLabel]);

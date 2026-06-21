@@ -54,6 +54,9 @@ export function useSectionAnalytics(sectionRef, sectionId, sectionLabel = sectio
 
     observer.observe(el)
 
+    const onBeforeFlush = () => flush()
+    window.addEventListener('analytics:before-flush', onBeforeFlush)
+
     const onVisibilityChange = () => {
       if (document.visibilityState === 'hidden') flush()
     }
@@ -62,6 +65,7 @@ export function useSectionAnalytics(sectionRef, sectionId, sectionLabel = sectio
 
     return () => {
       flush()
+      window.removeEventListener('analytics:before-flush', onBeforeFlush)
       document.removeEventListener('visibilitychange', onVisibilityChange)
       observer.disconnect()
     }

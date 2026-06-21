@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { initSessionTracking, track } from './analytics';
 import './App.css';
 import PasswordGate from './components/PasswordGate';
 import Sparkle from './components/Sparkle';
@@ -44,6 +45,7 @@ function AuthenticatedContent() {
   const bouquetSectionRef = useRef(null);
   const closingMessageSectionRef = useRef(null);
   const questionsSectionRef = useRef(null);
+  const epilogueSectionRef = useRef(null);
   const journeyRef = useScrollJourney(
     heroSectionRef,
     messageSectionRef,
@@ -57,6 +59,12 @@ function AuthenticatedContent() {
   useSectionAnalytics(bouquetSectionRef, 'bouquet-photo', 'Bouquet photo');
   useSectionAnalytics(closingMessageSectionRef, 'closing-message', 'Closing message');
   useSectionAnalytics(questionsSectionRef, 'questions', 'Questions section');
+  useSectionAnalytics(epilogueSectionRef, 'epilogue', 'Epilogue');
+
+  useEffect(() => {
+    initSessionTracking();
+    track('session_started', {}, { immediate: true });
+  }, []);
 
   return (
     <div className="app" ref={journeyRef}>
@@ -637,7 +645,7 @@ function AuthenticatedContent() {
               },
             ]}
           />
-          <EpilogueSection id="epilogue" />
+          <EpilogueSection id="epilogue" sectionRef={epilogueSectionRef} />
     </div>
   );
 }

@@ -1,5 +1,14 @@
+import {
+  buildSessionSummary,
+  initSessionTracking,
+  markSummarySent,
+  recordEvent,
+} from './sessionState'
+
+export { initSessionTracking }
+
 const SESSION_KEY = 'analytics_session_id'
-const FLUSH_MS = 5000
+const FLUSH_MS = 3000
 const MAX_BATCH = 15
 
 const queue = []
@@ -54,6 +63,16 @@ function scheduleFlush() {
   }, FLUSH_MS)
 }
 
+function emitSessionSummary() {
+  if (!markSummarySent()) return
+
+  queue.push({
+    event: 'session_summary',
+    properties: buildSessionSummary(),
+    ts: new Date().toISOString(),
+  })
+}
+
 function bindUnloadFlush() {
   if (listenersBound) return
   listenersBound = true
@@ -62,13 +81,18 @@ function bindUnloadFlush() {
     if (document.visibilityState === 'hidden') flush(true)
   })
 
-  window.addEventListener('pagehide', () => flush(true))
+  window.addEventListener('pagehide', () => {
+    window.dispatchEvent(new Event('analytics:before-flush'))
+    emitSessionSummary()
+    flush(true)
+  })
 }
 
 export function track(event, properties = {}, options = {}) {
   if (import.meta.env.DEV) return
 
   bindUnloadFlush()
+  recordEvent(event, properties)
 
   queue.push({
     event,
