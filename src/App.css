@@ -18,6 +18,7 @@
   min-height: 100vh;
   width: 100%;
   z-index: 1;
+  overflow: hidden;
 }
 
 .content-overlay {
@@ -100,66 +101,6 @@
   object-position: center top;
   border-radius: clamp(20px, 6vw, 32px);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
-}
-
-.scroll-hint {
-  position: absolute;
-  bottom: clamp(12px, 2.5vh, 24px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: none;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(6px);
-  border-radius: 50%;
-  cursor: pointer;
-  animation: scroll-hint-bounce 1.6s ease-in-out infinite;
-}
-
-.scroll-hint-arrow {
-  color: white;
-  font-size: 1.4rem;
-  line-height: 1;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-@keyframes scroll-hint-bounce {
-  0%,
-  100% {
-    transform: translateX(-50%) translateY(0);
-  }
-
-  50% {
-    transform: translateX(-50%) translateY(10px);
-  }
-}
-
-.message-section {
-  position: relative;
-  z-index: 1;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(32px, 6vw, 64px) clamp(20px, 5vw, 40px);
-}
-
-.message-placeholder {
-  width: min(100%, 520px);
-  padding: clamp(32px, 6vw, 48px);
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: 20px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-  text-align: center;
-  color: #5a4a6a;
-  font-size: clamp(1rem, 3.5vw, 1.25rem);
-  line-height: 1.6;
 }
 
 .content-overlay h1 {

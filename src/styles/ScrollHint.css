@@ -1,0 +1,37 @@
+.scroll-hint {
+  position: absolute;
+  bottom: clamp(12px, 2.5vh, 24px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+  border-radius: 50%;
+  cursor: pointer;
+  animation: scroll-hint-bounce 1.6s ease-in-out infinite;
+}
+
+.scroll-hint-arrow {
+  color: white;
+  font-size: 1.4rem;
+  line-height: 1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes scroll-hint-bounce {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(10px);
+  }
+}
