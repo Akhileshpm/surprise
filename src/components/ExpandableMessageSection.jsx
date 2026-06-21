@@ -1,4 +1,5 @@
 import React, { useId, useRef, useState } from 'react';
+import { track } from '../analytics';
 import '../styles/ExpandableMessageSection.css';
 import ScrollHint from './ScrollHint';
 
@@ -8,7 +9,11 @@ function ExpandableMessageItem({ id, questions, messages, defaultLanguage = 'ar'
   const [expanded, setExpanded] = useState(false);
 
   const toggleLanguage = () => {
-    setLanguage((prev) => (prev === 'en' ? 'ar' : 'en'));
+    setLanguage((prev) => {
+      const next = prev === 'en' ? 'ar' : 'en';
+      track('language_toggled', { section_id: id, language: next });
+      return next;
+    });
   };
 
   const isArabic = language === 'ar';
@@ -22,7 +27,13 @@ function ExpandableMessageItem({ id, questions, messages, defaultLanguage = 'ar'
         <button
           type="button"
           className="expandable-toggle"
-          onClick={() => setExpanded((prev) => !prev)}
+          onClick={() =>
+            setExpanded((prev) => {
+              const next = !prev;
+              track('expand_toggled', { item_id: id, expanded: next });
+              return next;
+            })
+          }
           aria-expanded={expanded}
           aria-controls={panelId}
           aria-label={expanded ? 'Collapse message' : 'Expand message'}

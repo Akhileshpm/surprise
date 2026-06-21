@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { track } from '../analytics';
 import '../styles/ScrollHint.css';
 
 function ScrollHint({ sectionRef, targetId }) {
@@ -43,9 +44,10 @@ function ScrollHint({ sectionRef, targetId }) {
       type="button"
       className="scroll-hint"
       aria-label="Scroll down"
-      onClick={() =>
-        document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' })
-      }
+      onClick={() => {
+        track('scroll_hint_clicked', { target_id: targetId });
+        document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
+      }}
     >
       <span className="scroll-hint-arrow" aria-hidden="true">
         ↓

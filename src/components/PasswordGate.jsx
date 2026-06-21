@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { track } from '../analytics';
 import '../styles/PasswordGate.css';
 
 function PasswordGate({ onAuthenticate }) {
@@ -13,7 +14,9 @@ function PasswordGate({ onAuthenticate }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validatePassword(password)) {
+    const success = validatePassword(password);
+    track('password_attempt', { success });
+    if (success) {
       setError('');
       onAuthenticate();
     } else {

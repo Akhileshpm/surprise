@@ -12,6 +12,7 @@ import PetalStream from './components/PetalStream';
 import SettlingPetals from './components/SettlingPetals';
 import ScrollHint from './components/ScrollHint';
 import { useScrollJourney } from './hooks/useScrollJourney';
+import { useSectionDwell } from './hooks/useSectionDwell';
 import mainImage from './assets/background.jpg';
 import hbdpImage from './assets/hbdp.jpeg';
 import chichouaGhibliImage from './assets/chichoua-ghibli.png';
@@ -21,11 +22,27 @@ import audioFile from './assets/background-music.mp3';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="app">
+        <AudioPlayer audioSrc={audioFile} isAuthenticated={false} />
+        <Sparkle isAuthenticated={false} />
+        <PasswordGate onAuthenticate={() => setIsAuthenticated(true)} />
+      </div>
+    );
+  }
+
+  return <AuthenticatedContent />;
+}
+
+function AuthenticatedContent() {
   const heroSectionRef = useRef(null);
   const messageSectionRef = useRef(null);
   const gardenSectionRef = useRef(null);
   const bouquetSectionRef = useRef(null);
   const closingMessageSectionRef = useRef(null);
+  const questionsSectionRef = useRef(null);
   const journeyRef = useScrollJourney(
     heroSectionRef,
     messageSectionRef,
@@ -33,14 +50,17 @@ function App() {
     bouquetSectionRef
   );
 
+  useSectionDwell(heroSectionRef, 'hero');
+  useSectionDwell(messageSectionRef, 'message-section');
+  useSectionDwell(gardenSectionRef, 'rose-garden');
+  useSectionDwell(bouquetSectionRef, 'bouquet-photo');
+  useSectionDwell(closingMessageSectionRef, 'closing-message');
+  useSectionDwell(questionsSectionRef, 'questions');
+
   return (
     <div className="app" ref={journeyRef}>
-      <AudioPlayer audioSrc={audioFile} isAuthenticated={isAuthenticated} />
-      <Sparkle isAuthenticated={isAuthenticated} />
-      {!isAuthenticated ? (
-        <PasswordGate onAuthenticate={() => setIsAuthenticated(true)} />
-      ) : (
-        <>
+      <AudioPlayer audioSrc={audioFile} isAuthenticated={true} />
+      <Sparkle isAuthenticated={true} />
           <div className="page-background" style={{ backgroundImage: `url(${mainImage})` }} />
           <SettlingPetals />
           <BouquetConvergence />
@@ -149,6 +169,7 @@ function App() {
           />
           <ExpandableMessageGroup
             id="questions"
+            sectionRef={questionsSectionRef}
             intro={{
               ar: 'عافاك يا مريامة، كوني لطيفة معايا واقري كلشي.',
               en: 'Please be my kind Mariama and read everything.',
@@ -613,8 +634,6 @@ function App() {
               },
             ]}
           />
-        </>
-      )}
     </div>
   );
 }

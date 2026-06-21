@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { track } from '../analytics';
 import '../styles/MessageSection.css';
 import ScrollHint from './ScrollHint';
 
@@ -17,7 +18,11 @@ function MessageSection({
   const [language, setLanguage] = useState(defaultLanguage);
 
   const toggleLanguage = () => {
-    setLanguage((prev) => (prev === 'en' ? 'ar' : 'en'));
+    setLanguage((prev) => {
+      const next = prev === 'en' ? 'ar' : 'en';
+      track('language_toggled', { section_id: id, language: next });
+      return next;
+    });
   };
 
   const content = messages[language];
