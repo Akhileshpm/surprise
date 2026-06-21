@@ -2,8 +2,18 @@ import React, { useRef, useState } from 'react';
 import '../styles/MessageSection.css';
 import ScrollHint from './ScrollHint';
 
-function MessageSection({ id, messages, defaultLanguage = 'ar', nextSectionId }) {
-  const sectionRef = useRef(null);
+function MessageSection({
+  id,
+  messages,
+  defaultLanguage = 'ar',
+  nextSectionId,
+  sectionRef: externalRef,
+  className = '',
+  embedded = false,
+  showScrollHint = true,
+}) {
+  const internalRef = useRef(null);
+  const sectionRef = externalRef || internalRef;
   const [language, setLanguage] = useState(defaultLanguage);
 
   const toggleLanguage = () => {
@@ -12,9 +22,11 @@ function MessageSection({ id, messages, defaultLanguage = 'ar', nextSectionId })
 
   const content = messages[language];
   const isArabic = language === 'ar';
+  const Tag = embedded ? 'div' : 'section';
+  const sectionClassName = ['message-section', className].filter(Boolean).join(' ');
 
   return (
-    <section id={id} ref={sectionRef} className="message-section">
+    <Tag id={id} ref={sectionRef} className={sectionClassName}>
       <div className="message-container">
         <div className="message-header">
           <button
@@ -32,8 +44,10 @@ function MessageSection({ id, messages, defaultLanguage = 'ar', nextSectionId })
           {content}
         </div>
       </div>
-      <ScrollHint sectionRef={sectionRef} targetId={nextSectionId} />
-    </section>
+      {showScrollHint && nextSectionId && (
+        <ScrollHint sectionRef={sectionRef} targetId={nextSectionId} />
+      )}
+    </Tag>
   );
 }
 

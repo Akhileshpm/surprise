@@ -1,0 +1,60 @@
+.settling-petals {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  contain: strict;
+  opacity: clamp(
+    0,
+    calc((var(--garden-fill, var(--garden-handoff, 0)) - 0.005) * 1.35 * var(--settling-fade, 1)),
+    1
+  );
+}
+
+.settling-petals__petal {
+  position: absolute;
+  border-radius: 50% 50% 50% 0;
+  background: linear-gradient(145deg, var(--petal-fill), var(--petal-shadow));
+  box-shadow:
+    0 1px 2px rgba(60, 10, 20, 0.22),
+    inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  --petal-visible: clamp(
+    0,
+    calc((var(--garden-fill, var(--garden-handoff, 0)) - var(--petal-reveal-at, 0)) * 8),
+    1
+  );
+  opacity: calc(var(--petal-visible) * 0.94);
+  transform: rotate(var(--petal-rotate, 0deg))
+    translateY(calc((1 - var(--petal-visible)) * -72px))
+    scale(calc(0.7 + var(--petal-visible) * 0.3));
+}
+
+.settling-petals__petal--bottom {
+  top: auto;
+}
+
+.settling-petals__petal--left {
+  left: 0;
+}
+
+.settling-petals__petal--right {
+  right: 0;
+  left: auto;
+}
+
+/* Blood-red petals read richer in the pile */
+.settling-petals__petal--red {
+  box-shadow:
+    0 1px 3px rgba(40, 0, 0, 0.35),
+    inset 0 1px 1px rgba(255, 120, 120, 0.08);
+}
+
+@media (max-width: 768px) {
+  .settling-petals__petal {
+    --petal-visible: clamp(
+      0,
+      calc((var(--garden-fill, var(--garden-handoff, 0)) - var(--petal-reveal-at, 0)) * 8.5),
+      1
+    );
+  }
+}

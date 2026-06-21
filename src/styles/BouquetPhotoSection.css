@@ -1,0 +1,58 @@
+.bouquet-photo-section {
+  position: relative;
+  z-index: 2;
+  height: 260vh;
+}
+
+.bouquet-photo-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 32px);
+  z-index: 5;
+}
+
+.bouquet-photo-frame {
+  position: relative;
+  display: inline-block;
+  max-width: min(92vw, 520px);
+  line-height: 0;
+  border-radius: clamp(16px, 4vw, 24px);
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(40, 20, 30, 0.28);
+}
+
+.bouquet-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(78vh, 720px);
+  object-fit: contain;
+}
+
+/* Bouquet she is holding — bottom-right of the photo */
+.bouquet-target {
+  position: absolute;
+  right: 3%;
+  bottom: 4%;
+  width: 34%;
+  height: 26%;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .bouquet-photo-section {
+    height: 240vh;
+  }
+
+  .bouquet-target {
+    right: 2%;
+    bottom: 3%;
+    width: 36%;
+    height: 28%;
+  }
+}

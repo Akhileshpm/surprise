@@ -1,0 +1,53 @@
+.bouquet-convergence {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+  contain: strict;
+  opacity: clamp(0, calc((var(--bouquet-approach, 0) - 0.02) * 1.25), 1);
+}
+
+.bouquet-convergence__petal {
+  position: fixed;
+  left: calc(var(--start-x-pct, 0) * 1vw);
+  top: calc(var(--start-y-pct, 0) * 1vh);
+  border-radius: 50% 50% 50% 0;
+  background: linear-gradient(145deg, var(--petal-fill), var(--petal-shadow));
+  box-shadow: 0 1px 3px rgba(60, 10, 20, 0.2);
+  opacity: calc(1 - var(--petal-settle, 0));
+  --petal-travel: clamp(
+    0,
+    calc((var(--bouquet-merge, 0) - var(--petal-release, 0)) / 0.3),
+    1
+  );
+  --petal-settle: clamp(0, calc((var(--petal-travel, 0) - 0.9) / 0.1), 1);
+  transform: translate3d(
+      calc(
+        (
+          var(--bouquet-ax, 0px) + var(--tx, 0) * var(--bouquet-aw, 0px) -
+          var(--start-x-pct, 0) * 1vw
+        ) * var(--petal-travel)
+      ),
+      calc(
+        (
+          var(--bouquet-ay, 0px) + var(--ty, 0) * var(--bouquet-ah, 0px) -
+          var(--start-y-pct, 0) * 1vh
+        ) * var(--petal-travel)
+      ),
+      0
+    )
+    rotate(calc(var(--petal-rotate, 0deg) + var(--petal-travel) * 160deg))
+    scale(calc(1 - var(--petal-settle, 0) * 0.4));
+}
+
+.bouquet-convergence__petal--red {
+  box-shadow: 0 1px 4px rgba(40, 0, 0, 0.35);
+}
+
+.app[data-phase='bouquet'] .settling-petals {
+  visibility: hidden;
+}
+
+.app[data-phase='bouquet'] .petal-stream {
+  opacity: 0;
+}

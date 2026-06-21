@@ -1,7 +1,7 @@
 .rose-garden-section {
   position: relative;
   z-index: 1;
-  height: 240vh;
+  height: 140vh;
 }
 
 .rose-garden-sticky {
@@ -9,113 +9,28 @@
   top: 0;
   height: 100vh;
   width: 100%;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(32px, 6vw, 64px) clamp(20px, 5vw, 40px);
 }
 
-.rose-garden-floor {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.bouquet-layer {
-  position: absolute;
-  inset: 0;
-}
-
-.bouquet-layer--white {
-  z-index: 1;
-}
-
-.bouquet-layer--pink {
-  z-index: 2;
-}
-
-.bouquet-layer--red {
-  z-index: 3;
-}
-
-.bouquet {
-  position: absolute;
-  bottom: 0;
-  will-change: transform;
-  transition: transform 0.15s linear;
-}
-
-.bouquet img {
-  display: block;
+.message-section--garden {
+  position: relative;
+  z-index: 5;
   width: 100%;
-  height: auto;
-  -webkit-user-drag: none;
-  user-select: none;
-  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.22));
+  min-height: auto;
+  padding: 0;
+  pointer-events: auto;
 }
 
-/* White bouquets rise highest — fill middle to bottom */
-.bouquet--white {
-  width: clamp(140px, 28vw, 260px);
-}
-
-.bouquet-layer--white .bouquet--left {
-  left: clamp(4px, 2vw, 24px);
-}
-
-.bouquet-layer--white .bouquet--center {
-  left: 50%;
-}
-
-.bouquet-layer--white .bouquet--right {
-  right: clamp(4px, 2vw, 24px);
-}
-
-/* Pink sits in front, slightly shorter */
-.bouquet--pink {
-  width: clamp(130px, 26vw, 240px);
-}
-
-.bouquet-layer--pink .bouquet--left {
-  left: clamp(8px, 4vw, 40px);
-}
-
-.bouquet-layer--pink .bouquet--center {
-  left: 50%;
-}
-
-.bouquet-layer--pink .bouquet--right {
-  right: clamp(8px, 4vw, 40px);
-}
-
-/* Red covers the bottom front */
-.bouquet--red {
-  width: clamp(120px, 24vw, 220px);
-}
-
-.bouquet-layer--red .bouquet--left {
-  left: clamp(12px, 6vw, 56px);
-}
-
-.bouquet-layer--red .bouquet--center {
-  left: 50%;
-}
-
-.bouquet-layer--red .bouquet--right {
-  right: clamp(12px, 6vw, 56px);
+.message-section--garden .message-container {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 12px 40px rgba(80, 40, 60, 0.12);
 }
 
 @media (max-width: 768px) {
   .rose-garden-section {
-    height: 200vh;
-  }
-
-  .bouquet--white {
-    width: clamp(110px, 32vw, 180px);
-  }
-
-  .bouquet--pink {
-    width: clamp(100px, 30vw, 165px);
-  }
-
-  .bouquet--red {
-    width: clamp(90px, 28vw, 150px);
+    height: 130vh;
   }
 }

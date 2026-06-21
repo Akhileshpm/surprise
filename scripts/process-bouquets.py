@@ -279,6 +279,89 @@ def remove_white_backdrop(img):
     return img
 
 
+def remove_flat_cream_backdrop(img):
+    px = img.load()
+    w, h = img.size
+    for y in range(1, h - 1):
+        for x in range(1, w - 1):
+            r, g, b, a = px[x, y]
+            if a < 128:
+                continue
+            sat = max(r, g, b) - min(r, g, b)
+            avg = (r + g + b) / 3
+            if not (210 <= avg <= 242 and sat < 16):
+                continue
+            neighbors = [px[x + dx, y + dy] for dx, dy in ((-1, 0), (1, 0), (0, -1), (0, 1))]
+            if not all(
+                n[3] > 128 and abs((sum(n[:3]) / 3) - avg) < 8 and max(n[:3]) - min(n[:3]) < 16
+                for n in neighbors
+            ):
+                continue
+            has_green_near = False
+            for dy in range(-10, 11):
+                for dx in range(-10, 11):
+                    nx, ny = x + dx, y + dy
+                    if 0 <= nx < w and 0 <= ny < h:
+                        nr, ng, nb, na = px[nx, ny]
+                        if na > 128 and ng > nr + 8 and ng > nb + 8:
+                            has_green_near = True
+                            break
+                if has_green_near:
+                    break
+            if not has_green_near:
+                px[x, y] = (r, g, b, 0)
+    return img
+
+
+def remove_cream_without_nearby_green(img, max_dist=6):
+    px = img.load()
+    w, h = img.size
+    near_rose = [[999999] * w for _ in range(h)]
+    queue = deque()
+
+    def is_anchor(r, g, b, a):
+        if a < 128:
+            return False
+        sat = max(r, g, b) - min(r, g, b)
+        avg = (r + g + b) / 3
+        if g > r + 8 and g > b + 8:
+            return True
+        if avg < 212:
+            return True
+        if sat >= 18:
+            return True
+        return False
+
+    for y in range(h):
+        for x in range(w):
+            r, g, b, a = px[x, y]
+            if is_anchor(r, g, b, a):
+                near_rose[y][x] = 0
+                queue.append((x, y))
+
+    while queue:
+        x, y = queue.popleft()
+        if near_rose[y][x] >= max_dist:
+            continue
+        for nx, ny in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)):
+            if 0 <= nx < w and 0 <= ny < h and px[nx, ny][3] >= 128:
+                if near_rose[ny][nx] > near_rose[y][x] + 1:
+                    near_rose[ny][nx] = near_rose[y][x] + 1
+                    queue.append((nx, ny))
+
+    for y in range(h):
+        for x in range(w):
+            r, g, b, a = px[x, y]
+            if a < 128:
+                continue
+            sat = max(r, g, b) - min(r, g, b)
+            avg = (r + g + b) / 3
+            if avg >= 226 and sat < 12 and near_rose[y][x] > max_dist:
+                px[x, y] = (r, g, b, 0)
+
+    return img
+
+
 def process(name, source):
     print(f"Processing {name}...")
     white_roses = name == "white"
@@ -288,6 +371,9 @@ def process(name, source):
     img = apply_bouquet_mask(img)
     if white_roses:
         img = remove_isolated_checkerboard(img)
+        img = remove_white_backdrop(img)
+        img = remove_flat_cream_backdrop(img)
+        img = remove_cream_without_nearby_green(img)
         img = remove_white_backdrop(img)
     img = remove_checkerboard(img, white_roses=white_roses)
     img = cleanup_fringe(img, white_roses=white_roses)
